@@ -7,6 +7,11 @@ RUN set -eux; \
 	        libpng-dev \
 		build-base \
 	'; \
+	runDeps=' \
+		libpng \
+		libjpeg-turbo \
+		freetype \
+	'; \
 	apk add --no-cache --virtual .build-deps \
 		$buildDeps \
 	; \
@@ -16,5 +21,8 @@ RUN set -eux; \
 	docker-php-ext-install -j$(nproc) gd; \
 	docker-php-ext-configure pdo_mysql --with-pdo-mysql=mysqlnd; \
 	docker-php-ext-install -j$(nproc) pdo_mysql; \
+	apk add --no-cache --virtual .run-deps \
+		$runDeps \
+	; \
 	apk del .build-deps; 
 
